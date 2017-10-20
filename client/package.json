@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "bson": "^1.0.4",
     "materialize-css": "^0.100.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
