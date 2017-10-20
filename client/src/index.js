@@ -1,8 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import 'materialize-css/dist/css/materialize.min.css'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import reduxThunk from 'redux-thunk'
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+import App from './components/App'
+import reducers from './reducers'
+
+// create a redux store (w/ reducers, and a reduxThunk middleware)
+const store= createStore(reducers, {}, applyMiddleware(reduxThunk))
+
+ReactDOM.render(
+	// top level provider with store
+	<Provider store={store}><App /></Provider>,
+	// link with #root in /public.index
+	document.querySelector('#root')
+)
