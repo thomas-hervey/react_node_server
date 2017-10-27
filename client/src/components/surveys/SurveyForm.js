@@ -3,21 +3,15 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 import { Link } from 'react-router-dom'
+import formFields from './formFields'
 
 import SurveyField from './SurveyField'
 import validateEmails from '../../utils/validateEmails'
 
-const FIELDS = [
-	{label: 'Survey Title', name: 'title'},
-	{label: 'Subject Line', name: 'subject'},
-	{label: 'Email Body', name: 'body'},
-	{label: 'Recipient List', name: 'emails'},
-]
-
 class SurveyForm extends Component {
 
 	renderFields() {
-		return _.map(FIELDS, ({ label, name }) => {
+		return _.map(formFields, ({ label, name }) => {
 			return <Field key={name} component={SurveyField} type="text" name={name} label={label}/>
 		})
 	}
@@ -45,11 +39,11 @@ class SurveyForm extends Component {
 function validate(values) {
 	const errors = {}
 
-	errors.emails = validateEmails(values.emails || '') // validate emails
+	errors.recipients = validateEmails(values.recipients || '') // validate emails
 
 	// validate simple fields
 	// not specifically the field 'name', but on the fly, check if a property exists
-	_.each(FIELDS, ({ name }) => {
+	_.each(formFields, ({ name }) => {
 		if (!values[name]) {
 			errors[name] = 'You must provide a value'
 		}
@@ -62,5 +56,6 @@ function validate(values) {
 // reduxForm helper that takes in necessary options
 export default reduxForm({
 	validate,
-	form: 'surveyForm'
+	form: 'surveyForm',
+	destroyOnUnmount: false // if unmount, persist form values to next page
 })(SurveyForm)
